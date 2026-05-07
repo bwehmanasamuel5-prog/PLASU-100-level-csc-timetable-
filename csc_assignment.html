@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSC 123 Assignment</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --card: #101728;
+    --border: #1e3a5f;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --green: #00ff88;
+    --yellow: #ffd600;
+    --text: #c9d8f0;
+    --dim: #5a7a99;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    padding: 24px 16px 48px;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, #0d2a4a55 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 90%, #1a0a3a55 0%, transparent 50%);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header .tag {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(18px, 5vw, 30px);
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 30px var(--accent);
+    letter-spacing: 2px;
+  }
+
+  header p {
+    margin-top: 8px;
+    color: var(--dim);
+    font-size: 13px;
+  }
+
+  .section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: linear-gradient(90deg, #0d2040, #0a0e1a);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .qnum {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--accent2);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .section-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .section-body { padding: 20px; }
+
+  /* Algorithm block */
+  .algo {
+    background: #080c18;
+    border: 1px solid #1e3a5f;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .algo-title {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--yellow);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .algo-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .algo ol {
+    padding-left: 20px;
+    line-height: 2;
+    font-size: 13.5px;
+    color: var(--text);
+  }
+
+  .algo ol li { margin-bottom: 2px; }
+
+  .keyword { color: var(--accent); font-weight: bold; }
+  .action  { color: var(--green); }
+  .note    { color: var(--dim); font-size: 12px; }
+
+  /* Code block */
+  .code-wrap {
+    background: #050810;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .code-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: #0d1a2e;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-bar span {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--green);
+    text-transform: uppercase;
+  }
+
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 3px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  pre {
+    padding: 18px 20px;
+    font-size: 13px;
+    line-height: 1.9;
+    overflow-x: auto;
+    color: #a8c0e0;
+  }
+
+  .b-rem  { color: #4a6a88; font-style: italic; } /* REM comments */
+  .b-kw   { color: #00e5ff; font-weight: bold; }  /* Keywords */
+  .b-str  { color: #ffd600; }                      /* Strings */
+  .b-num  { color: #00ff88; }                      /* Numbers/vars */
+  .b-ln   { color: #2a4a68; user-select: none; margin-right: 16px; display: inline-block; width: 24px; text-align: right; } /* line nums */
+
+  /* Run site card */
+  .run-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 480px) {
+    .run-grid { grid-template-columns: 1fr; }
+  }
+
+  .run-card {
+    background: #080c18;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-decoration: none;
+    display: block;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .run-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+
+  .run-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px #00e5ff18;
+  }
+
+  .run-card:hover::before { transform: scaleX(1); }
+
+  .run-card .site-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .run-card .site-url {
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .run-card .site-desc {
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.5;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 8px;
+  }
+
+  .badge-rec { background: #00ff8822; color: var(--green); border: 1px solid #00ff8844; }
+  .badge-alt { background: #ffd60022; color: var(--yellow); border: 1px solid #ffd60044; }
+
+  .steps {
+    background: #080c18;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+
+  .steps h4 {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--yellow);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .steps ol {
+    padding-left: 18px;
+    font-size: 13px;
+    line-height: 2;
+    color: var(--text);
+  }
+
+  .steps ol li span { color: var(--accent); }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--dim);
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">// Plateau State University Bokkos</div>
+  <h1>CSC ASSIGNMENT</h1>
+  <p>BASIC Programming Language &nbsp;|&nbsp; Algorithms &amp; Implementation</p>
+</header>
+
+
+<!-- =================== Q1 =================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="qnum">Q1</span>
+    <h2>ALGORITHM — CSC 123 COURSE REGISTRATION</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="algo">
+      <div class="algo-title">Pseudocode Algorithm</div>
+      <ol>
+        <li><span class="keyword">START</span></li>
+        <li><span class="action">DISPLAY</span> "Welcome to PLASU Course Registration Portal"</li>
+        <li><span class="action">INPUT</span> Matric Number</li>
+        <li><span class="action">INPUT</span> Password</li>
+        <li><span class="keyword">IF</span> Matric Number <span class="keyword">OR</span> Password is empty <span class="keyword">THEN</span></li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="action">DISPLAY</span> "Error: Credentials cannot be empty" <span class="note">→ go to step 3</span></li>
+        <li><span class="keyword">END IF</span></li>
+        <li><span class="action">DISPLAY</span> "Login Successful — Loading Dashboard..."</li>
+        <li><span class="action">DISPLAY</span> "Navigating to Course Registration Module"</li>
+        <li><span class="action">DISPLAY</span> "Course Found: CSC 123 — Introduction to Computing"</li>
+        <li><span class="action">DISPLAY</span> "Do you want to register CSC 123? (Y/N)"</li>
+        <li><span class="action">INPUT</span> Choice</li>
+        <li><span class="keyword">IF</span> Choice = "Y" <span class="keyword">THEN</span></li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="action">DISPLAY</span> "CSC 123 Successfully Registered!"</li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="action">DISPLAY</span> Registration Receipt with Matric Number</li>
+        <li><span class="keyword">ELSE</span></li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="action">DISPLAY</span> "Registration Cancelled"</li>
+        <li><span class="keyword">END IF</span></li>
+        <li><span class="keyword">STOP</span></li>
+      </ol>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-bar">
+        <span>🖥 BASIC — Q1 Source Code</span>
+        <button class="copy-btn" onclick="copyCode('code1')">COPY</button>
+      </div>
+      <pre id="code1"><span class="b-rem">REM =============================================</span>
+<span class="b-rem">REM  CSC ASSIGNMENT - QUESTION 1</span>
+<span class="b-rem">REM  Course Registration for CSC 123</span>
+<span class="b-rem">REM  Plateau State University Bokkos (PLASU)</span>
+<span class="b-rem">REM =============================================</span>
+
+<span class="b-kw">CLS</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"======================================="</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"  PLASU COURSE REGISTRATION PORTAL"</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"======================================="</span>
+<span class="b-kw">PRINT</span>
+
+<span class="b-rem">REM --- Step 1: Get Login Credentials ---</span>
+<span class="b-kw">INPUT</span> <span class="b-str">"Enter Matric Number: "</span>, MATRIC$
+<span class="b-kw">INPUT</span> <span class="b-str">"Enter Password    : "</span>, PASS$
+
+<span class="b-rem">REM --- Step 2: Validate Input ---</span>
+<span class="b-kw">IF</span> MATRIC$ = <span class="b-str">""</span> <span class="b-kw">OR</span> PASS$ = <span class="b-str">""</span> <span class="b-kw">THEN</span>
+    <span class="b-kw">PRINT</span> <span class="b-str">"ERROR: Matric number and password are required!"</span>
+    <span class="b-kw">END</span>
+<span class="b-kw">END IF</span>
+
+<span class="b-rem">REM --- Step 3: Login Success ---</span>
+<span class="b-kw">PRINT</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"Login Successful! Welcome, "</span>; MATRIC$
+<span class="b-kw">PRINT</span> <span class="b-str">"Navigating to Course Registration..."</span>
+<span class="b-kw">PRINT</span>
+
+<span class="b-rem">REM --- Step 4: Show Course ---</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"Course Found:"</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"  Code  : CSC 123"</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"  Title : Introduction to Computing"</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"  Units : 3"</span>
+<span class="b-kw">PRINT</span>
+<span class="b-kw">INPUT</span> <span class="b-str">"Register this course? (Y/N): "</span>, CHOICE$
+
+<span class="b-rem">REM --- Step 5: Register or Cancel ---</span>
+<span class="b-kw">IF</span> CHOICE$ = <span class="b-str">"Y"</span> <span class="b-kw">OR</span> CHOICE$ = <span class="b-str">"y"</span> <span class="b-kw">THEN</span>
+    <span class="b-kw">PRINT</span>
+    <span class="b-kw">PRINT</span> <span class="b-str">"======================================="</span>
+    <span class="b-kw">PRINT</span> <span class="b-str">"       REGISTRATION RECEIPT"</span>
+    <span class="b-kw">PRINT</span> <span class="b-str">"======================================="</span>
+    <span class="b-kw">PRINT</span> <span class="b-str">"Student : "</span>; MATRIC$
+    <span class="b-kw">PRINT</span> <span class="b-str">"Course  : CSC 123"</span>
+    <span class="b-kw">PRINT</span> <span class="b-str">"Status  : SUCCESSFULLY REGISTERED"</span>
+    <span class="b-kw">PRINT</span> <span class="b-str">"======================================="</span>
+<span class="b-kw">ELSE</span>
+    <span class="b-kw">PRINT</span> <span class="b-str">"Registration Cancelled."</span>
+<span class="b-kw">END IF</span>
+
+<span class="b-kw">END</span></pre>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- =================== Q2 =================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="qnum">Q2</span>
+    <h2>ALGORITHM — AVERAGE OF THREE NEGATIVE INTEGERS</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="algo">
+      <div class="algo-title">Pseudocode Algorithm</div>
+      <ol>
+        <li><span class="keyword">START</span></li>
+        <li><span class="action">DISPLAY</span> "Enter three negative integers"</li>
+        <li><span class="action">INPUT</span> A, B, C</li>
+        <li><span class="keyword">IF</span> A ≥ 0 <span class="keyword">OR</span> B ≥ 0 <span class="keyword">OR</span> C ≥ 0 <span class="keyword">THEN</span></li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="action">DISPLAY</span> "Error: All integers must be negative" <span class="note">→ go to step 2</span></li>
+        <li><span class="keyword">END IF</span></li>
+        <li>Compute <span class="action">SUM = A + B + C</span></li>
+        <li>Compute <span class="action">AVERAGE = SUM / 3</span></li>
+        <li><span class="action">DISPLAY</span> "Sum =", SUM</li>
+        <li><span class="action">DISPLAY</span> "Average =", AVERAGE</li>
+        <li><span class="keyword">STOP</span></li>
+      </ol>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-bar">
+        <span>🖥 BASIC — Q2 Source Code</span>
+        <button class="copy-btn" onclick="copyCode('code2')">COPY</button>
+      </div>
+      <pre id="code2"><span class="b-rem">REM =============================================</span>
+<span class="b-rem">REM  CSC ASSIGNMENT - QUESTION 2</span>
+<span class="b-rem">REM  Average of Three Negative Integers</span>
+<span class="b-rem">REM =============================================</span>
+
+<span class="b-kw">CLS</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"======================================="</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"  AVERAGE OF THREE NEGATIVE INTEGERS"</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"======================================="</span>
+<span class="b-kw">PRINT</span>
+
+<span class="b-rem">REM --- Step 1: Accept Input ---</span>
+<span class="b-kw">INPUT</span> <span class="b-str">"Enter first negative integer : "</span>, A
+<span class="b-kw">INPUT</span> <span class="b-str">"Enter second negative integer: "</span>, B
+<span class="b-kw">INPUT</span> <span class="b-str">"Enter third negative integer : "</span>, C
+
+<span class="b-rem">REM --- Step 2: Validate (must all be negative) ---</span>
+<span class="b-kw">IF</span> A >= <span class="b-num">0</span> <span class="b-kw">OR</span> B >= <span class="b-num">0</span> <span class="b-kw">OR</span> C >= <span class="b-num">0</span> <span class="b-kw">THEN</span>
+    <span class="b-kw">PRINT</span>
+    <span class="b-kw">PRINT</span> <span class="b-str">"ERROR: All three integers must be negative!"</span>
+    <span class="b-kw">END</span>
+<span class="b-kw">END IF</span>
+
+<span class="b-rem">REM --- Step 3: Calculate ---</span>
+<span class="b-kw">LET</span> SUM = A + B + C
+<span class="b-kw">LET</span> AVG = SUM / <span class="b-num">3</span>
+
+<span class="b-rem">REM --- Step 4: Display Results ---</span>
+<span class="b-kw">PRINT</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"======================================="</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"           RESULTS"</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"======================================="</span>
+<span class="b-kw">PRINT</span> <span class="b-str">"Integers : "</span>; A; <span class="b-str">","</span>; B; <span class="b-str">","</span>; C
+<span class="b-kw">PRINT</span> <span class="b-str">"Sum      : "</span>; SUM
+<span class="b-kw">PRINT</span> <span class="b-str">"Average  : "</span>; AVG
+<span class="b-kw">PRINT</span> <span class="b-str">"======================================="</span>
+
+<span class="b-kw">END</span></pre>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- =================== WHERE TO RUN =================== -->
+<div class="section">
+  <div class="section-header">
+    <span class="qnum">Q3</span>
+    <h2>WHERE TO RUN YOUR BASIC CODE</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="run-grid">
+
+      <a class="run-card" href="https://www.jdoodle.com/execute-basic-online/" target="_blank">
+        <div class="site-name">JDoodle</div>
+        <div class="site-url">jdoodle.com</div>
+        <div class="site-desc">Free online BASIC compiler. Select "BASIC" from language dropdown, paste your code and hit RUN.</div>
+        <span class="badge badge-rec">⭐ RECOMMENDED</span>
+      </a>
+
+      <a class="run-card" href="https://www.onlinegdb.com/online_basic_compiler" target="_blank">
+        <div class="site-name">OnlineGDB</div>
+        <div class="site-url">onlinegdb.com</div>
+        <div class="site-desc">Reliable online compiler, supports QBasic syntax. Clean interface, handles INPUT statements well.</div>
+        <span class="badge badge-alt">✓ ALTERNATIVE</span>
+      </a>
+
+    </div>
+
+    <div class="steps">
+      <h4>How to Use JDoodle (Step by Step)</h4>
+      <ol>
+        <li>Open <span>jdoodle.com/execute-basic-online</span> in your browser</li>
+        <li>Click the <span>language dropdown</span> (top right) → select <span>"BASIC"</span></li>
+        <li><span>Clear</span> the default code in the editor</li>
+        <li><span>Copy and paste</span> your BASIC code from above (use the COPY button)</li>
+        <li>Click the <span>green EXECUTE button</span></li>
+        <li>Your program runs in the <span>output panel</span> below the editor</li>
+      </ol>
+    </div>
+
+  </div>
+</div>
+
+<footer>// PLASU &nbsp;|&nbsp; CSC &nbsp;|&nbsp; 100 LEVEL — 2ND SEMESTER</footer>
+
+<script>
+function copyCode(id) {
+  const pre = document.getElementById(id);
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = 'COPIED!';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green)';
+    setTimeout(() => {
+      btn.textContent = 'COPY';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
